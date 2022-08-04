@@ -31,6 +31,31 @@ public class ArticleRepository {
         return sql.selectRow(ArticleDto.class);
     }
 
+    public ArticleDto getBeForeArticleById(long id) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT *")
+                .append("FROM article")
+                .append("where id < ?", (id))
+                .append("ORDER BY id DESC")
+                .append("LIMIT 1");
+
+        return sql.selectRow(ArticleDto.class);
+    }
+
+    public ArticleDto getAfterArticleById(long id) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT *")
+                .append("FROM article")
+                .append("where id > ?", (id))
+                .append("ORDER BY id ASC")
+                .append("LIMIT 1");
+
+        return sql.selectRow(ArticleDto.class);
+
+    }
+
     public long getArticlesCount() {
         SecSql sql = myMap.genSecSql();
         sql

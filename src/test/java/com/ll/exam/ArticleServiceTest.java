@@ -19,6 +19,7 @@ public class ArticleServiceTest {
 
     private ArticleService articleService;
     private MyMap myMap;
+    private static final int size = 5;
     @BeforeAll
     public void beforeAll(){
         articleService = Container.getObj(ArticleService.class);
@@ -37,7 +38,7 @@ public class ArticleServiceTest {
     }
 
     private void makeArticleTestData() {
-        IntStream.rangeClosed(1, 3).forEach(no -> {
+        IntStream.rangeClosed(1, size).forEach(no -> {
             boolean isBlind = false;
             String title = "제목%d".formatted(no);
             String body = "내용%d".formatted(no);
@@ -66,7 +67,7 @@ public class ArticleServiceTest {
     @Test
     public void getArticles(){
         List<ArticleDto> articles = articleService.getArticles();
-        assertThat(articles.size()).isEqualTo(3);
+        assertThat(articles.size()).isEqualTo(size);
     }
 
     @Test
@@ -91,7 +92,7 @@ public class ArticleServiceTest {
     @Test
     public void getArticlesCount(){
         long articlesCount = articleService.getArticlesCount();
-        assertThat(articlesCount).isEqualTo(3);
+        assertThat(articlesCount).isEqualTo(size);
     }
 
     @Test
@@ -131,6 +132,21 @@ public class ArticleServiceTest {
         ArticleDto articleDto = articleService.getArticleById(1);
         assertThat(articleDto).isNull();
 
+    }
+
+    @Test
+    public void 이전글_가져오기(){
+        ArticleDto beforeArticleById = articleService.getBeforeArticleById(2);
+        ArticleDto articleDtoByid = articleService.getArticleById(1);
+
+        assertThat(beforeArticleById).isEqualTo(articleDtoByid);
+    }
+    @Test
+    public void 다음글_가져오기(){
+        ArticleDto beforeArticleById = articleService.getAfterArticleById(2);
+        ArticleDto articleDtoByid = articleService.getArticleById(3);
+
+        assertThat(beforeArticleById).isEqualTo(articleDtoByid);
     }
 
 }
