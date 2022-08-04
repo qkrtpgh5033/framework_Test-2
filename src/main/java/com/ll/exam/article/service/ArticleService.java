@@ -43,4 +43,8 @@ public class ArticleService {
     public ArticleDto getAfterArticleById(long id) {
         return articleRepository.getAfterArticleById(id);
     }
+
+    public void setBlindArticles(int left, int right) {
+        articleRepository.setBlindArticles(left, right);
+    }
 }

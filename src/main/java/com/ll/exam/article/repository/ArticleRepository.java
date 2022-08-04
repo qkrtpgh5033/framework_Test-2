@@ -48,7 +48,8 @@ public class ArticleRepository {
         sql
                 .append("SELECT *")
                 .append("FROM article")
-                .append("where id > ?", (id))
+                .append("where id > ? and", (id))
+                .append("isBlind = 0")
                 .append("ORDER BY id ASC")
                 .append("LIMIT 1");
 
@@ -97,5 +98,16 @@ public class ArticleRepository {
                 .append("where id= ? ", id);
 
         sql.delete();
+    }
+
+    public void setBlindArticles(int left, int right) {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("update article")
+                .append("set isBlind = ?", true)
+                .append("where id >= ? AND", left)
+                .append("id <= ?", right);
+        sql.update();
+
     }
 }

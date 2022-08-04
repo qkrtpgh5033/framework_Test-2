@@ -19,7 +19,7 @@ public class ArticleServiceTest {
 
     private ArticleService articleService;
     private MyMap myMap;
-    private static final int size = 5;
+    private static final int size = 50;
     @BeforeAll
     public void beforeAll(){
         articleService = Container.getObj(ArticleService.class);
@@ -144,9 +144,18 @@ public class ArticleServiceTest {
     @Test
     public void 다음글_가져오기(){
         ArticleDto beforeArticleById = articleService.getAfterArticleById(2);
-        ArticleDto articleDtoByid = articleService.getArticleById(3);
+        ArticleDto articleDtoById = articleService.getArticleById(3);
 
-        assertThat(beforeArticleById).isEqualTo(articleDtoByid);
+        assertThat(beforeArticleById).isEqualTo(articleDtoById);
     }
+
+    @Test
+    void test_10번글의_다음글_21번글이다(){
+        articleService.setBlindArticles(11, 20);
+        ArticleDto afterArticleById = articleService.getAfterArticleById(10);
+        assertThat(afterArticleById.getId()).isEqualTo(21);
+    }
+
+
 
 }
