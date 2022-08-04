@@ -22,12 +22,20 @@ public class ArticleRepository {
         return sql.selectRows(ArticleDto.class);
     }
 
-    public ArticleDto getArticleById(int id) {
+    public ArticleDto getArticleById(long id) {
         SecSql sql = myMap.genSecSql();
         sql
                 .append("SELECT *")
                 .append("FROM article")
                 .append("Where id = ? ", id);
         return sql.selectRow(ArticleDto.class);
+    }
+
+    public long getArticlesCount() {
+        SecSql sql = myMap.genSecSql();
+        sql
+                .append("SELECT count(*)")
+                .append("FROM article");
+        return sql.selectLong();
     }
 }
