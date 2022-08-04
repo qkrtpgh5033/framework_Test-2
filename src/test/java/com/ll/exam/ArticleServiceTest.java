@@ -125,5 +125,14 @@ public class ArticleServiceTest {
         assertThat(articleDto.getModifiedDate()).isNotNull();
         assertThat(articleDto.isBlind()).isEqualTo(true);
     }
+    @Test
+    public void delete() {
+
+        articleService.deleteById(1);
+
+        ArticleDto articleDto = articleService.getArticleById(1);
+        assertThat(articleDto).isNull();
+
+    }
 
 }
