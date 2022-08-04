@@ -17,11 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ArticleServiceTest {
 
-    static ArticleService articleService;
+    private ArticleService articleService;
+    private MyMap myMap;
     @BeforeAll
     public void beforeAll(){
         articleService = Container.getObj(ArticleService.class);
-        MyMap myMap = Container.getObj(MyMap.class);
+        myMap = Container.getObj(MyMap.class);
         myMap.setDevMode(true);
     }
 
@@ -36,8 +37,6 @@ public class ArticleServiceTest {
     }
 
     private void makeArticleTestData() {
-        MyMap myMap = Container.getObj(MyMap.class);
-
         IntStream.rangeClosed(1, 3).forEach(no -> {
             boolean isBlind = false;
             String title = "제목%d".formatted(no);
@@ -55,7 +54,6 @@ public class ArticleServiceTest {
     }
 
     private void truncateArticleTable() {
-        MyMap myMap = Container.getObj(MyMap.class);
         // 테이블을 깔끔하게 지워준다.
         myMap.run("TRUNCATE article");
     }
