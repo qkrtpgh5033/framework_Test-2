@@ -3,21 +3,26 @@ package com.ll.exam;
 import com.ll.exam.article.dto.ArticleDto;
 import com.ll.exam.article.service.ArticleService;
 import com.ll.exam.mymap.MyMap;
+import com.ll.exam.util.Ut;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ArticleServiceTest {
 
     static ArticleService articleService;
     @BeforeAll
-    static void beforeAll(){
+    public void beforeAll(){
         articleService = Container.getObj(ArticleService.class);
+        MyMap myMap = Container.getObj(MyMap.class);
+        myMap.setDevMode(true);
     }
 
     @BeforeEach
@@ -93,7 +98,6 @@ public class ArticleServiceTest {
 
     @Test
     public void write() {
-        ArticleService articleService = Container.getObj(ArticleService.class);
 
         long newArticleId = articleService.write("제목 new", "내용 new", false);
 
@@ -105,6 +109,21 @@ public class ArticleServiceTest {
         assertThat(articleDto.getCreatedDate()).isNotNull();
         assertThat(articleDto.getModifiedDate()).isNotNull();
         assertThat(articleDto.isBlind()).isEqualTo(false);
+    }
+
+    @Test
+    public void modify() {
+//        Ut.sleep(5000);
+        articleService.modify(1, "제목 new", "내용 new", true);
+
+        ArticleDto articleDto = articleService.getArticleById(1);
+
+        assertThat(articleDto.getId()).isEqualTo(1);
+        assertThat(articleDto.getTitle()).isEqualTo("제목 new");
+        assertThat(articleDto.getBody()).isEqualTo("내용 new");
+        assertThat(articleDto.getCreatedDate()).isNotNull();
+        assertThat(articleDto.getModifiedDate()).isNotNull();
+        assertThat(articleDto.isBlind()).isEqualTo(true);
     }
 
 }

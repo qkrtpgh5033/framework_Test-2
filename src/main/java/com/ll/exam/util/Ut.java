@@ -28,6 +28,14 @@ public class Ut {
         return map;
     }
 
+    public static void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static class json {
         private static final ObjectMapper om;
 
